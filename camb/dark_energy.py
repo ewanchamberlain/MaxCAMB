@@ -150,6 +150,16 @@ class DarkEnergyPPF(DarkEnergyEqnOfState):
 
 
 @fortran_class
+class DarkEnergyMaxPPF(DarkEnergyPPF):
+    """
+    Like above, but w(a) = max(-1, w0 + wa*(1-a)).
+    """
+    # cannot declare c_Gamma_ppf directly here as have not defined all fields in DarkEnergyEqnOfState (TCubicSpline)
+    _fortran_class_module_ = 'DarkEnergyMaxPPF'
+    _fortran_class_name_ = 'TDarkEnergyMaxPPF'
+    _ini_name = "maxppf"
+
+@fortran_class
 class AxionEffectiveFluid(DarkEnergyModel):
     """
     Example implementation of a specific (early) dark energy fluid model
@@ -273,4 +283,4 @@ class EarlyQuintessence(Quintessence):
 
 
 # short names for models that support w/wa
-F2003Class._class_names.update({"fluid": DarkEnergyFluid, "ppf": DarkEnergyPPF})
+F2003Class._class_names.update({'fluid': DarkEnergyFluid, 'ppf': DarkEnergyPPF, 'maxppf': DarkEnergyMaxPPF})

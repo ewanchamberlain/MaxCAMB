@@ -1,5 +1,5 @@
 ===================
-CAMB
+MaxCAMB
 ===================
 :CAMB: Code for Anisotropies in the Microwave Background
 :Author: Antony Lewis and Anthony Challinor
@@ -18,6 +18,12 @@ CAMB
 .. image:: https://mybinder.org/badge_logo.svg
   :target: https://mybinder.org/v2/gh/cmbant/CAMB/HEAD?filepath=docs%2FCAMBdemo.ipynb
 
+MaxCAMB
+=============================
+
+CAMB with DarkEnergyMaxPPF class, implementing the Max$w_0w_a$CDM model of arXiv:2412.13894, where
+
+$$ w(a) = \max(w_0 + w_a(1-a), -1). $$
 Description and installation
 =============================
 

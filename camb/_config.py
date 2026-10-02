@@ -1,32 +1,15 @@
 import os
-from ctypes import c_bool, c_char, c_double, c_int
-
-from .baseconfig import CAMBError, import_property
+from .baseconfig import import_property, CAMBError
+from ctypes import c_char, c_int, c_bool, c_double
 
 lensing_method_curv_corr = 1
 lensing_method_flat_corr = 2
 lensing_method_harmonic = 3
-lensing_method_curv_corr_full = 4
-lensing_method_optimized = 5
 
 
 class _config:
     # print feedback if > 0 (note in Jupyter notebook this will appear in the terminal, not the notebook)
     FeedbackLevel = import_property(c_int, "config", "FeedbackLevel")
-
-    # if True, the Fortran code prints warnings (e.g. low-resolution, narrow window, parameter sanity checks)
-    print_fortran_warnings = import_property(c_bool, "config", "print_fortran_warnings")
-
-    # enable targeted accuracy improvements if > 0, AccuracyTarget being SO-like.
-    AccuracyTarget = import_property(c_int, "config", "AccuracyTarget")
-
-    enable_do_near_flat_integration = import_property(c_bool, "config", "enable_do_near_flat_integration")
-
-    enable_near_flat_smallchi_integration = import_property(c_bool, "config", "enable_near_flat_smallchi_integration")
-
-    enable_shifted_nu_scalar_approx = import_property(c_bool, "config", "enable_shifted_nu_scalar_approx")
-
-    enable_olver_source_integration = import_property(c_bool, "config", "enable_olver_source_integration")
 
     # print additional timing and progress (when FeedbackLevel>0)
     DebugMsgs = import_property(c_bool, "config", "DebugMsgs")
@@ -53,31 +36,31 @@ class _config:
     _global_error_message = import_property(c_char * 1024, "config", "global_error_message")
 
     def global_error_message(self):
-        return bytearray(self._global_error_message).decode("ascii").strip()
+        return bytearray(self._global_error_message).decode('ascii').strip()
 
-    def check_global_error(self, reference=""):
+    def check_global_error(self, reference=''):
         if code := self.global_error_flag:
             self.global_error_flag = 0
             if reference:
-                reference = f"Error in Fortran called from {reference}:\n"
+                reference = 'Error in Fortran called from %s:\n' % reference
             else:
-                reference = ""
+                reference = ''
             if err := config.global_error_message():
-                raise CAMBError(reference + f"{err}")
+                raise CAMBError(reference + '%s' % err)
             else:
-                raise CAMBError(reference + f"Error code: {code}")
+                raise CAMBError(reference + 'Error code: %s' % code)
 
     def __repr__(self):
-        s = ""
+        s = ''
         for x in dir(self):
-            if x[0] != "_":
+            if x[0] != '_':
                 value = getattr(self, x)
                 if not callable(value):
-                    s += f"{x} = {value}\n"
+                    s += '%s = %s\n' % (x, value)
         return s
 
 
 config = _config()
 
-if os.environ.get("BINDER_LAUNCH_HOST"):
+if os.environ.get('BINDER_LAUNCH_HOST'):
     config.ThreadNum = 1  # binder is very slow with more than 1 CPU, force 1 by default
