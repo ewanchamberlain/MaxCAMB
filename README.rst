@@ -21,9 +21,11 @@ MaxCAMB
 MaxCAMB
 =============================
 
-CAMB with DarkEnergyMaxPPF class, implementing the Max$w_0w_a$CDM model of arXiv:2412.13894, where
+CAMB with DarkEnergyMaxPPF class, implementing the Max\ :math:`w_0w_a`\ CDM model of arXiv:2412.13894, where
 
-$$ w(a) = \mathrm{max}(w_0 + w_a(1-a), -1). $$
+.. math::
+
+   w(a) = \max\left(w_0 + w_a(1-a),\, -1\right).
 
 Description and installation
 =============================
